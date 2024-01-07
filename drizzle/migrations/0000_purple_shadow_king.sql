@@ -22,8 +22,8 @@ CREATE TABLE `castle_categories` (
 --> statement-breakpoint
 CREATE TABLE `castle_coordinates` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`latitude` text,
-	`longitude` text,
+	`latitude` real,
+	`longitude` real,
 	`castle_id` integer,
 	FOREIGN KEY (`castle_id`) REFERENCES `castles`(`id`) ON UPDATE no action ON DELETE no action
 );

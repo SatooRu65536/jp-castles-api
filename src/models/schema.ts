@@ -1,121 +1,121 @@
 import { sqliteTable, integer, real, text } from "drizzle-orm/sqlite-core";
 
-export const castles = sqliteTable("castles", {
+export const Castles = sqliteTable("Castles", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name"),
   desc: text("desc"),
   history: text("history"),
   build_year: integer("build_year"),
-  type_id: integer("type_id").references(() => types.id),
+  typeId: integer("type_id").references(() => Types.id),
   site: text("site"),
 });
 
-export const castleAliases = sqliteTable("castle_aliases", {
+export const CastleAliases = sqliteTable("castle_aliases", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   alias: text("alias").notNull(),
-  castle_id: integer("castle_id").references(() => castles.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const castleLords = sqliteTable("castle_lords", {
+export const CastleLords = sqliteTable("castle_lords", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name"),
   from: text("from"),
   to: text("to"),
-  castle_id: integer("castle_id").references(() => castles.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const castleCoordinates = sqliteTable("castle_coordinates", {
+export const CastleCoordinates = sqliteTable("castle_coordinates", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  lat: text("latitude"),
-  lng: text("longitude"),
-  castle_id: integer("castle_id").references(() => castles.id),
+  lat: real("latitude"),
+  lng: real("longitude"),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const castlePlaces = sqliteTable("castle_places", {
+export const Prefs = sqliteTable("prefs", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  pref_id: integer("pref_id").references(() => prefs.id),
-  area_id: integer("area_id").references(() => areas.id),
-  city_id: integer("city_id").references(() => cities.id),
+  name: text("name"),
+});
+
+export const Areas = sqliteTable("areas", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name"),
+  prefId: integer("pref_id").references(() => Prefs.id),
+});
+
+export const Cities = sqliteTable("cities", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name"),
+  prefId: integer("pref_id").references(() => Prefs.id),
+  areaId: integer("area_id").references(() => Areas.id),
+});
+
+export const CastlePlaces = sqliteTable("castle_places", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  prefId: integer("pref_id").references(() => Prefs.id),
+  areaId: integer("area_id").references(() => Areas.id),
+  cityId: integer("city_id").references(() => Cities.id),
   address: text("address"),
-  castle_id: integer("castle_id").references(() => castles.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const prefs = sqliteTable("prefs", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name"),
-});
-
-export const areas = sqliteTable("areas", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name"),
-  pref_id: integer("pref_id").references(() => prefs.id),
-});
-
-export const cities = sqliteTable("cities", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name"),
-  pref_id: integer("pref_id").references(() => prefs.id),
-  area_id: integer("area_id").references(() => areas.id),
-});
-
-export const castleTowers = sqliteTable("castle_towers", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  layer: integer("layer"),
-  floor: integer("floor"),
-  condition_id: integer("condition_id").references(
-    () => castleTowerConditions.id
-  ),
-  castle_id: integer("castle_id").references(() => castles.id),
-});
-
-export const castleTowerConditions = sqliteTable("castle_tower_conditions", {
+export const CastleTowerConditions = sqliteTable("castle_tower_conditions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   condition: text("name"),
 });
 
-export const types = sqliteTable("types", {
+export const CastleTowers = sqliteTable("castle_towers", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  layer: integer("layer"),
+  floor: integer("floor"),
+  conditionId: integer("condition_id").references(
+    () => CastleTowerConditions.id
+  ),
+  castleId: integer("castle_id").references(() => Castles.id),
+});
+
+export const Types = sqliteTable("types", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   type: text("type"),
 });
 
-export const structures = sqliteTable("structures", {
+export const Structures = sqliteTable("structures", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("structure"),
 });
 
-export const castleRemains = sqliteTable("castle_remains", {
+export const CastleRemains = sqliteTable("castle_remains", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  structure_id: integer("structure_id").references(() => structures.id),
-  castle_id: integer("castle_id").references(() => castles.id),
+  structure_id: integer("structure_id").references(() => Structures.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const castleRestorations = sqliteTable("castle_restorations", {
+export const CastleRestorations = sqliteTable("castle_restorations", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  structure_id: integer("structure_id").references(() => structures.id),
-  castle_id: integer("castle_id").references(() => castles.id),
+  structure_id: integer("structure_id").references(() => Structures.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const categories = sqliteTable("categories", {
+export const Categories = sqliteTable("categories", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   category: text("category"),
 });
 
-export const castleCategories = sqliteTable("castle_categories", {
+export const CastleCategories = sqliteTable("castle_categories", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  category_id: integer("category_id").references(() => categories.id),
-  castle_id: integer("castle_id").references(() => castles.id),
+  category_id: integer("category_id").references(() => Categories.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const castleImages = sqliteTable("castle_images", {
+export const CastleImages = sqliteTable("castle_images", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   url: text("url"),
-  castle_id: integer("castle_id").references(() => castles.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });
 
-export const castleNearestStations = sqliteTable("castle_nearest_stations", {
+export const CastleNearestStations = sqliteTable("castle_nearest_stations", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name"),
   line: text("line"),
   distance: real("distance"),
-  castle_id: integer("castle_id").references(() => castles.id),
+  castleId: integer("castle_id").references(() => Castles.id),
 });

@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "22828e63-0d3f-4bfd-af26-69829e425a82",
+  "id": "812989bb-d47b-4894-adb6-007d2727e404",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "areas": {
@@ -161,14 +161,14 @@
         },
         "latitude": {
           "name": "latitude",
-          "type": "text",
+          "type": "real",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "longitude": {
           "name": "longitude",
-          "type": "text",
+          "type": "real",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
