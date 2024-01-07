@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1704643075328,
+      "tag": "0000_cool_wonder_man",
+      "breakpoints": true
+    }
+  ]
+}
