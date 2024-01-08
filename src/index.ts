@@ -17,18 +17,29 @@ app.get("/castle/get/:id", async (c) => {
   return await CastleController.getCastle(c, id);
 });
 
-app.post("/castle/create", async (c) => {
+app.post("/castle/add", async (c) => {
   const castle = await c.req.json<Castle>();
   return await CastleController.addCastle(c, castle);
 });
 
 app.post("/castle/categories/add", async (c) => {
   const { categories } = await c.req.json<{ categories: string[] }>();
+  console.log('categories', categories);
   return await CastleController.addCategories(c, categories);
 });
 
 app.get("/castle/categories/get", async (c) => {
   return await CastleController.getCategories(c);
+});
+
+app.post("/castle/types/add", async (c) => {
+  const { types } = await c.req.json<{ types: string[] }>();
+  console.log('categories', types);
+  return await CastleController.addTypes(c, types);
+});
+
+app.get("/castle/types/get", async (c) => {
+  return await CastleController.getTypes(c);
 });
 
 app.all("*", (c) => {

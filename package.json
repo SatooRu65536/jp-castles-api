@@ -1,7 +1,8 @@
 {
   "type": "module",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "vite",
+    "dev": "./node_modules/.bin/wrangler dev ./src/index.ts",
     "build": "vite build",
     "preview": "wrangler pages dev dist",
     "deploy": "$npm_execpath run build && wrangler pages deploy dist",
