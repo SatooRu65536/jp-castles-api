@@ -1,2 +1,0 @@
-### 城マーカーを取得する
-GET http://localhost:8787/markers?latMin=45&latMax=36&lngMin=136&lngMax=137 HTTP/1.1

@@ -1,0 +1,5 @@
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "jp-castles-db"
+database_id = "1c42acdc-e110-4a22-8f88-22a656972d86"
+migrations_dir = "drizzle/migrations"

@@ -4,6 +4,5 @@ dist
 .dev.vars
 
 # Change them to your taste:
-wrangler.toml
 package-lock.json
 pnpm-lock.yaml
