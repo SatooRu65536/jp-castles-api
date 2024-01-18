@@ -5,7 +5,11 @@ import { z } from "zod";
 import { CastleController } from "./controllers/castle.controller";
 import { ZodHookRes } from "./types/zod";
 import { ErrorRes } from "./types/response";
-import { GetMarkersReq, PostMarkersReq } from "./types/request";
+import {
+  GetMarkersReq,
+  PostMarkersReq,
+  deleteMarkersReq,
+} from "./types/request";
 import { ContextMarkers } from "./types/context";
 
 export type Bindings = {
@@ -59,8 +63,20 @@ app.post(
   async (c) => await CastleController.postMarkers(c)
 );
 
+const deleteMarkersSchema = z.object({
+  ids: z.string().array(),
+});
+
 // マーカーを削除する
-app.delete("/markers", async (c) => await CastleController.deleteMarkers(c));
+app.delete(
+  "/markers",
+  zValidator(
+    "json",
+    deleteMarkersSchema,
+    zodHook<deleteMarkersReq, ContextMarkers>
+  ),
+  async (c) => await CastleController.deleteMarkers(c)
+);
 
 // Not Found
 app.all("*", (c) => c.json({ message: "Not Found" }, 404));
