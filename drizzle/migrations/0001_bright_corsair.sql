@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `CastleMarkers_key_unique` ON `CastleMarkers` (`key`);

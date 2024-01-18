@@ -8,6 +8,13 @@
       "when": 1705339367675,
       "tag": "0000_gigantic_pixie",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1705543225745,
+      "tag": "0001_bright_corsair",
+      "breakpoints": true
     }
   ]
 }

@@ -1,9 +1,11 @@
 import { drizzle } from "drizzle-orm/d1";
 import { CastleMarkers } from "../models/schema";
-import { and, between, gte } from "drizzle-orm";
+import { and, between, gte, inArray } from "drizzle-orm";
 import { CastleMarker } from "../types/map";
 import { ContextMarkers } from "../types/context";
 import { MarkerRes } from "../types/response";
+import { PostMarkersReq } from "../types/request";
+import { MarkerService } from "../service/marker.service";
 
 export class CastleController {
   /**
@@ -18,12 +20,6 @@ export class CastleController {
     const lngMax = Number(c.req.queries("lngMax"));
     const scale = Number(c.req.queries("scale"));
 
-    if (isNaN(latMin) || isNaN(latMax) || isNaN(lngMin) || isNaN(lngMax)) {
-      const message =
-        '"latMin", "latMax", "lngMin" and "lngMin" must all be specified';
-      return c.json({ message }, 400);
-    }
-
     const db = drizzle(c.env.DB);
     const markers = await db
       .select()
@@ -34,21 +30,14 @@ export class CastleController {
           between(CastleMarkers.lng, lngMin, lngMax),
           gte(CastleMarkers.scale, isNaN(scale) ? 0 : scale)
         )
-      );
+      )
+      .then((r) => MarkerService.toCastles(r))
+      .catch((e) => null);
 
-    const castleMarkers: CastleMarker[] = markers.map((m) => {
-      return {
-        id: m.id,
-        name: m.name,
-        coordinates: {
-          lat: m.lat,
-          lng: m.lng,
-        },
-        scale: m.scale,
-      };
-    });
+    if (markers) return c.json<{ markers: CastleMarker[] }>({ markers });
 
-    return c.json<{ markers: CastleMarker[] }>({ markers: castleMarkers });
+    const message = "error occurred when selecting on the database";
+    return c.json({ message }, 500);
   }
 
   /**
@@ -57,10 +46,42 @@ export class CastleController {
    * @returns {Promise<MarkerRes>} Response
    */
   public static async postMarkers(c: ContextMarkers): Promise<MarkerRes> {
-    const body = await c.req.json();
+    const { markers } = await c.req.json<PostMarkersReq>();
+
+    const markerSnap = markers.map((m) => ({
+      id: `${m.name}_${m.coordinates.lat}_${m.coordinates.lng}`,
+      name: m.name,
+      lat: m.coordinates.lat,
+      lng: m.coordinates.lng,
+      scale: m.scale,
+    }));
 
     const db = drizzle(c.env.DB);
 
-    return c.json({ message: "hi" });
+    const response = await db
+      .insert(CastleMarkers)
+      .values(markerSnap)
+      .returning()
+      .then((r) => c.json({ markers: MarkerService.toCastles(r) }))
+      .catch((e) => null);
+
+    if (response) return response;
+
+    // markerSnap[].id が重複しているものを取得する
+    const ids = markerSnap.map((m) => m.id);
+    const dupMarkers = await db
+      .select()
+      .from(CastleMarkers)
+      .where(inArray(CastleMarkers.id, ids));
+
+    const dupMarkersSnap = MarkerService.toCastles(dupMarkers);
+
+    return c.json(
+      {
+        message: "Attempting to register multiple times.",
+        markers: dupMarkersSnap,
+      },
+      500
+    );
   }
 }

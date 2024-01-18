@@ -3,3 +3,20 @@ GET http://localhost:8000/markers?latMin=33.18033281701138&latMax=37.18033281701
 
 ### 城マーカーを取得する(エラー)
 GET http://localhost:8000/markers?lngMin=134.9082307815552&lngMax=138.9082307815552&scale=1 HTTP/1.1
+
+### 城マーカーを追加する
+POST http://localhost:8000/markers HTTP/1.1
+Content-Type: application/json
+
+{
+    "markers": [
+        {
+            "name": "サンプル城",
+            "coordinates": {
+                "lat": 999,
+                "lng": 888
+            },
+            "scale": 1
+        }
+    ]
+}

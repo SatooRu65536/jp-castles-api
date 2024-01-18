@@ -9,3 +9,11 @@ export type CastleMarker = {
   coordinates: Coordinates;
   scale: number;
 };
+
+export type FlatCastleMarker = {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  scale: number;
+};
