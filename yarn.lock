@@ -568,6 +568,11 @@
     protobufjs "^7.2.4"
     yargs "^17.7.2"
 
+"@hono/zod-validator@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@hono/zod-validator/-/zod-validator-0.1.11.tgz#7d3e900f01d4c7be6a8c7a7ea1986caaffef423b"
+  integrity sha512-PQXeHUP0+36qpRt8yfeD7N2jbK3ETlGvSN6dMof/HwUC/APRokQRjpXZm4rrlG71Ft0aWE01+Bm4XejqPie5Uw==
+
 "@jridgewell/resolve-uri@^3.0.3":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@jridgewell/resolve-uri/-/resolve-uri-3.1.1.tgz#c08679063f279615a3326583ba3a90d1d82cc721"
@@ -2280,7 +2285,7 @@ youch@^3.2.2:
     mustache "^4.2.0"
     stacktracey "^2.1.8"
 
-zod@^3.20.2, zod@^3.20.6:
+zod@^3.20.2, zod@^3.20.6, zod@^3.22.4:
   version "3.22.4"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
   integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==

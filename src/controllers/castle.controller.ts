@@ -1,14 +1,17 @@
-import { Context } from "hono";
 import { drizzle } from "drizzle-orm/d1";
-import { Bindings } from "..";
 import { CastleMarkers } from "../models/schema";
 import { and, between, gte } from "drizzle-orm";
 import { CastleMarker } from "../types/map";
+import { ContextMarkers } from "../types/context";
+import { MarkerRes } from "../types/response";
 
 export class CastleController {
-  public static async getCastleMarkersByLatlng(
-    c: Context<{ Bindings: Bindings }, "/markers", {}>
-  ) {
+  /**
+   * マーカーを取得する
+   * @param c {ContextMarkers} Context
+   * @returns {Promise<MarkerRes>} Response
+   */
+  public static async getMarkers(c: ContextMarkers): Promise<MarkerRes> {
     const latMin = Number(c.req.queries("latMin"));
     const latMax = Number(c.req.queries("latMax"));
     const lngMin = Number(c.req.queries("lngMin"));
@@ -45,6 +48,19 @@ export class CastleController {
       };
     });
 
-    return c.json({ markers: castleMarkers });
+    return c.json<{ markers: CastleMarker[] }>({ markers: castleMarkers });
+  }
+
+  /**
+   * マーカーを登録する
+   * @param c {ContextMarkers} Context
+   * @returns {Promise<MarkerRes>} Response
+   */
+  public static async postMarkers(c: ContextMarkers): Promise<MarkerRes> {
+    const body = await c.req.json();
+
+    const db = drizzle(c.env.DB);
+
+    return c.json({ message: "hi" });
   }
 }
