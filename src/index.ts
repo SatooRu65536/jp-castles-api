@@ -10,27 +10,13 @@ const app = new Hono<{ Bindings: Bindings }>();
 
 app.use("/*", cors({ origin: "*" }));
 
-app.get("/", (c) => {
-  return c.json({ message: "Hello World" });
-});
+app.get("/", (c) => c.json({ message: "Hello World" }));
 
-app.get("/markers", async (c) => {
-  const latMin = Number(c.req.queries("latMin"));
-  const latMax = Number(c.req.queries("latMax"));
-  const lngMin = Number(c.req.queries("lngMin"));
-  const lngMax = Number(c.req.queries("lngMax"));
-  const scale = Number(c.req.queries("scale"));
+app.get(
+  "/markers",
+  async (c) => await CastleController.getCastleMarkersByLatlng(c)
+);
 
-  return await CastleController.getCastleMarkerByLatLngRange(
-    c,
-    [latMin, latMax],
-    [lngMin, lngMax],
-    scale
-  );
-});
-
-app.all("*", (c) => {
-  return c.json({ message: "Not Found" }, 404);
-});
+app.all("*", (c) => c.json({ message: "Not Found" }, 404));
 
 export default app;
