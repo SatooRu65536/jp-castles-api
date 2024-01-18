@@ -1,5 +1,8 @@
 ### 城マーカーを取得する
-GET http://localhost:8000/markers?latMin=33.18033281701138&latMax=37.18033281701138&lngMin=134.9082307815552&lngMax=138.9082307815552&scale=1 HTTP/1.1
+GET http://localhost:8000/markers?latMin=33.1803328170113&latMax=37.1803328170113&lngMin=134.9082307815552&lngMax=138.9082307815552&scale=1 HTTP/1.1
+
+### 城マーカーを取得する(全て)
+GET http://localhost:8000/markers?latMin=0&latMax=9999&lngMin=0&lngMax=9999 HTTP/1.1
 
 ### 城マーカーを取得する(エラー)
 GET http://localhost:8000/markers?lngMin=134.9082307815552&lngMax=138.9082307815552&scale=1 HTTP/1.1
@@ -18,5 +21,14 @@ Content-Type: application/json
             },
             "scale": 1
         }
+    ]
+}
+
+### 城マーカーを削除する
+DELETE http://localhost:8000/markers HTTP/1.1
+
+{
+    "ids": [
+        "999_888_1"
     ]
 }

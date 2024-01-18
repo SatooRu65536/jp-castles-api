@@ -9,3 +9,5 @@ export type GetMarkersReq = {
 };
 
 export type PostMarkersReq = { markers: Omit<CastleMarker, "id">[] };
+
+export type deleteMarkersReq = { ids: string[] };

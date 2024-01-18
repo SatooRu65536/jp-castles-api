@@ -7,3 +7,6 @@ type Error = { message: string; markers?: CastleMarker[] };
 
 export type ErrorRes = Response & TypedResponse<Error>;
 export type MarkerRes = (Response & TypedResponse<MarkersResObj>) | ErrorRes;
+export type MarkerIdsRes =
+  | (Response & TypedResponse<{ ids: string[] }>)
+  | ErrorRes;

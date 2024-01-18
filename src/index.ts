@@ -59,6 +59,9 @@ app.post(
   async (c) => await CastleController.postMarkers(c)
 );
 
+// マーカーを削除する
+app.delete("/markers", async (c) => await CastleController.deleteMarkers(c));
+
 // Not Found
 app.all("*", (c) => c.json({ message: "Not Found" }, 404));
 

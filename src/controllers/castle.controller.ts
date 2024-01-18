@@ -3,8 +3,8 @@ import { CastleMarkers } from "../models/schema";
 import { and, between, gte, inArray } from "drizzle-orm";
 import { CastleMarker } from "../types/map";
 import { ContextMarkers } from "../types/context";
-import { MarkerRes } from "../types/response";
-import { PostMarkersReq } from "../types/request";
+import { MarkerIdsRes, MarkerRes } from "../types/response";
+import { PostMarkersReq, deleteMarkersReq } from "../types/request";
 import { MarkerService } from "../service/marker.service";
 
 export class CastleController {
@@ -83,5 +83,27 @@ export class CastleController {
       },
       500
     );
+  }
+
+  /**
+   * マーカーを削除する
+   * @param c {ContextMarkers} Context
+   * @returns {Promise<MarkerRes>} Response
+   */
+  public static async deleteMarkers(c: ContextMarkers): Promise<MarkerIdsRes> {
+    const db = drizzle(c.env.DB);
+
+    const { ids } = await c.req.json<deleteMarkersReq>();
+    console.log(ids);
+
+    const resultIds = await db
+      .delete(CastleMarkers)
+      .where(inArray(CastleMarkers.id, ids))
+      .returning({ id: CastleMarkers.id });
+
+    if (resultIds) return c.json({ ids: resultIds.map((r) => r.id) });
+
+    const message = "error occurred when deleting on the database";
+    return c.json({ message }, 500);
   }
 }
