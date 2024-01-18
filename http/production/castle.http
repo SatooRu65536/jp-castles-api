@@ -1,2 +1,0 @@
-### 城マーカーを取得する(本番環境)
-GET http://api.castles.satooru.dev/markers?latMin=33.18033281701138&latMax=37.18033281701138&lngMin=134.9082307815552&lngMax=138.9082307815552&scale=1 HTTP/1.1

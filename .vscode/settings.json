@@ -1,0 +1,10 @@
+{
+    "rest-client.environmentVariables": {
+        "dev": {
+            "host": "localhost:8000",
+        },
+        "prod": {
+            "host": "api.castles.satooru.dev",
+        }
+    }
+}
