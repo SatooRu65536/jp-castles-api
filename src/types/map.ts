@@ -17,3 +17,8 @@ export type FlatCastleMarker = {
   lng: number;
   scale: number;
 };
+
+export type MarkerData = {
+  num: number;
+  updateAt: number;
+};

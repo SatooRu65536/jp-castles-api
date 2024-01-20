@@ -1,0 +1,1 @@
+ALTER TABLE CastleMarkers ADD `update_at` integer DEFAULT 1704067200000 NOT NULL;

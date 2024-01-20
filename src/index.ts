@@ -2,7 +2,7 @@ import { Context, Hono } from "hono";
 import { cors } from "hono/cors";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { CastleController } from "./controllers/castle.controller";
+import { MarkerController } from "./controllers/marker.controller";
 import { ZodHookRes } from "./types/zod";
 import { ErrorRes } from "./types/response";
 import {
@@ -36,7 +36,7 @@ const getMarkersSchema = z.object({
 app.get(
   "/markers",
   zValidator("query", getMarkersSchema, zodHook<GetMarkersReq, ContextMarkers>),
-  async (c) => await CastleController.getMarkers(c)
+  async (c) => await MarkerController.getMarkers(c)
 );
 
 const postMarkersSchema = z.object({
@@ -60,7 +60,7 @@ app.post(
     postMarkersSchema,
     zodHook<PostMarkersReq, ContextMarkers>
   ),
-  async (c) => await CastleController.postMarkers(c)
+  async (c) => await MarkerController.postMarkers(c)
 );
 
 const deleteMarkersSchema = z.object({
@@ -75,8 +75,11 @@ app.delete(
     deleteMarkersSchema,
     zodHook<deleteMarkersReq, ContextMarkers>
   ),
-  async (c) => await CastleController.deleteMarkers(c)
+  async (c) => await MarkerController.deleteMarkers(c)
 );
+
+// マーカーの情報を取得する
+app.get("/markers/data", async (c) => await MarkerController.getMarkerData(c))
 
 // Not Found
 app.all("*", (c) => c.json({ message: "Not Found" }, 404));

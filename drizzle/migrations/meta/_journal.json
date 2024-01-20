@@ -15,6 +15,13 @@
       "when": 1705543225745,
       "tag": "0001_bright_corsair",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1705759364204,
+      "tag": "0002_dapper_lenny_balinger",
+      "breakpoints": true
     }
   ]
 }

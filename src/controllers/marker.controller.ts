@@ -1,13 +1,13 @@
+import { and, between, count, gte, inArray, max } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { CastleMarkers } from "../models/schema";
-import { and, between, gte, inArray } from "drizzle-orm";
-import { CastleMarker } from "../types/map";
-import { ContextMarkers } from "../types/context";
-import { MarkerIdsRes, MarkerRes } from "../types/response";
-import { PostMarkersReq, deleteMarkersReq } from "../types/request";
 import { MarkerService } from "../service/marker.service";
+import { ContextMarkerData, ContextMarkers } from "../types/context";
+import { CastleMarker } from "../types/map";
+import { PostMarkersReq, deleteMarkersReq } from "../types/request";
+import { MarkerDataRes, MarkerIdsRes, MarkerRes } from "../types/response";
 
-export class CastleController {
+export class MarkerController {
   /**
    * マーカーを取得する
    * @param c {ContextMarkers} Context
@@ -54,6 +54,7 @@ export class CastleController {
       lat: m.coordinates.lat,
       lng: m.coordinates.lng,
       scale: m.scale,
+      updateAt: new Date().getTime(),
     }));
 
     const db = drizzle(c.env.DB);
@@ -105,5 +106,32 @@ export class CastleController {
 
     const message = "error occurred when deleting on the database";
     return c.json({ message }, 500);
+  }
+
+  /**
+   * マーカーのデータを取得する
+   * @param c {ContextMarkers} Context
+   * @returns {Promise<MarkerDataRes>} Response
+   */
+  public static async getMarkerData(
+    c: ContextMarkerData
+  ): Promise<MarkerDataRes> {
+    const db = drizzle(c.env.DB);
+
+    const result = await db
+      .select({
+        updateAt: max(CastleMarkers.updateAt),
+        num: count(CastleMarkers.id),
+      })
+      .from(CastleMarkers);
+
+    const { updateAt, num } = result[0];
+    if (updateAt === null) {
+      const message = "cannot find last update";
+      return c.json({ message }, 500);
+    }
+
+    const data = { num, updateAt: Number(updateAt) };
+    return c.json({ data });
   }
 }

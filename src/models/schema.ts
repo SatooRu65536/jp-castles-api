@@ -7,4 +7,5 @@ export const CastleMarkers = sqliteTable("CastleMarkers", {
   lat: real("lat").notNull(),
   lng: real("lng").notNull(),
   scale: integer("scale").notNull(),
+  updateAt: integer("update_at").notNull().default(1704067200000),
 });
