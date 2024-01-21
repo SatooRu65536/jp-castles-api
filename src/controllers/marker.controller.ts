@@ -137,7 +137,6 @@ export class MarkerController {
     const db = drizzle(c.env.DB);
 
     const { ids } = await c.req.json<deleteMarkersReq>();
-    console.log(ids);
 
     const resultIds = await db
       .delete(CastleMarkers)
